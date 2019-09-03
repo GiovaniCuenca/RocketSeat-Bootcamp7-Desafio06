@@ -12,6 +12,7 @@ import {
   SubmitButton,
   List,
   User,
+  ImageHeader,
   Avatar,
   Name,
   Bio,
@@ -53,9 +54,9 @@ export default class Main extends Component {
   }
 
   handleAddUser = async () => {
-    const { users, newUser } = this.state;
-
     this.setState({ loading: true });
+
+    const { users, newUser } = this.state;
 
     const response = await api.get(`/users/${newUser}`);
 
@@ -73,6 +74,14 @@ export default class Main extends Component {
     });
 
     Keyboard.dismiss();
+  };
+
+  handleDeleteUser = user => {
+    const { users } = this.state;
+
+    this.setState({
+      users: [...users.splice(user, 1)],
+    });
   };
 
   handleNavigate = user => {
@@ -103,13 +112,21 @@ export default class Main extends Component {
             )}
           </SubmitButton>
         </Form>
-
         <List
           data={users}
           keyExtractor={user => user.login}
           renderItem={({ item }) => (
             <User>
-              <Avatar source={{ uri: item.avatar }} />
+              <ImageHeader>
+                <Icon name="close" size={20} color="#FFF" />
+                <Avatar source={{ uri: item.avatar }} />
+                <Icon
+                  name="close"
+                  size={20}
+                  color="#CCC"
+                  onPress={() => this.handleDeleteUser(item)}
+                />
+              </ImageHeader>
               <Name>{item.name}</Name>
               <Bio>{item.bio}</Bio>
 
