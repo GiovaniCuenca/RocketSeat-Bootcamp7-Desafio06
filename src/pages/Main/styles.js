@@ -52,9 +52,9 @@ export const User = styled.View`
 `;
 
 export const ImageHeader = styled.View`
-  justify-content: space-around;
-  align-items: flex-start;
   flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 
 export const Avatar = styled.Image`

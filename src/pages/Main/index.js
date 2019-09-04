@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, ActivityIndicator } from 'react-native';
+import { Keyboard, ActivityIndicator, TouchableHighlight } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/api';
@@ -74,13 +74,14 @@ export default class Main extends Component {
     });
 
     Keyboard.dismiss();
+    newUser.value = '';
   };
 
   handleDeleteUser = user => {
     const { users } = this.state;
 
     this.setState({
-      users: [...users.splice(user, 1)],
+      users: users.filter(u => u.login !== user),
     });
   };
 
@@ -120,16 +121,14 @@ export default class Main extends Component {
               <ImageHeader>
                 <Icon name="close" size={20} color="#FFF" />
                 <Avatar source={{ uri: item.avatar }} />
-                <Icon
-                  name="close"
-                  size={20}
-                  color="#CCC"
-                  onPress={() => this.handleDeleteUser(item)}
-                />
+                <TouchableHighlight
+                  onPress={() => this.handleDeleteUser(item.login)}
+                >
+                  <Icon name="close" size={20} color="#666" />
+                </TouchableHighlight>
               </ImageHeader>
               <Name>{item.name}</Name>
               <Bio>{item.bio}</Bio>
-
               <ProfileButton onPress={() => this.handleNavigate(item)}>
                 <ProfileButtonText>Ver perfil</ProfileButtonText>
               </ProfileButton>
